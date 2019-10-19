@@ -6,6 +6,8 @@
     left:0;
     right:0;
     bottom:0;
+    width:100px;
+    height:100px;
 }
 
 #pane .pane-ceil {
@@ -14,4 +16,21 @@
 
 #pane .pane-ceil:hover{
     cursor:pointer;
+}
+
+#pane .pane-ceil .ceil-comment {
+    position:relative;
+    left:25px;
+    top:-15px;
+    width:100px;
+    height:20px;
+    border:1px solid #ccc;
+    border-radius: 2px;
+    background-color:#000;
+    display:none;
+    z-index: 1000;
+}
+
+#pane .pane-ceil:hover .ceil-comment{
+    display:block;
 }
