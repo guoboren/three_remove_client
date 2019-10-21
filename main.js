@@ -86,7 +86,7 @@ function drawPane(pane) {
             var _id = el.id
             var _score = el.score
             var _color = el.color
-            var $ceil = $("<div class='pane-ceil' id='" + _id + "' score='" + _score + "' color='" + _color + "' x='" + i + "' y='" + j + "'>" +
+            var $ceil = $("<div class='pane-ceil' id='" + _id + "' score='" + _score + "' color='" + _color + "' x='" + (i + 1) + "' y='" + (j + 1) + "'>" +
                 "<div class= 'ceil-comment' > " + "[id]: " + _id + ", [score]: " + _score + ", [color]: " + _color + "" + "</div >" +
                 "</div > ").css({
                     width: CEIL_WIDTH,
@@ -103,9 +103,10 @@ function drawPane(pane) {
 function _getExchangeResult() {
     var p1 = SELECTED_CEIL_1
     var p2 = SELECTED_CEIL_2
+    var result = -1
     $.ajax({
         url: BASE_URL,
-        async: true,
+        async: false,
         cache: false,
         type: "post",
         dataType: 'json',
@@ -138,11 +139,13 @@ function _getExchangeResult() {
             $p1.attr("y", parseInt($p2.attr("y")))
             $p2.attr("x", tmpX)
             $p2.attr("y", tmpY)
+            result = 0
         } else {
             console.error("交换失败")
+            result = 1
         }
     })
-    _clearSelectedCeil()
+    return result
 }
 
 function _clearSelectedCeil() {
@@ -175,7 +178,15 @@ function bindListener() {
                 y: y
             }
             // 发送到服务器
-            _getExchangeResult()
+            var promise = new Promise(function (resolve, reject) {
+                resolve(_getExchangeResult())
+            })
+            promise.then((e) => {
+                if (e == 0) {
+
+                }
+                _clearSelectedCeil()
+            })
             $("#pane .pane-ceil").removeClass("pane-ceil-selected")
         } else {
             SELECTED_CEIL_1 = {
