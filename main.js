@@ -103,7 +103,10 @@ function drawPane(pane) {
 function _getExchangeResult() {
     var p1 = SELECTED_CEIL_1
     var p2 = SELECTED_CEIL_2
-    var result = -1
+    var result = {
+        code: -1,
+        data: null
+    }
     $.ajax({
         url: BASE_URL,
         async: false,
@@ -119,33 +122,38 @@ function _getExchangeResult() {
     }).done(function (res) {
         if (res.errorCode == 0) {
             console.info("交换成功")
-            var $p1 = $("#pane .pane-ceil[id=" + p1.id + "][x=" + p1.x + "][y=" + p1.y + "]")
-            var $p2 = $("#pane .pane-ceil[id=" + p2.id + "][x=" + p2.x + "][y=" + p2.y + "]")
-            var desP1Left = $p2.position().left
-            var desP1Top = $p2.position().top
-            var desP2Left = $p1.position().left
-            var desP2Top = $p1.position().top
-            $p1.animate({
-                left: desP1Left,
-                top: desP1Top
-            })
-            $p2.animate({
-                left: desP2Left,
-                top: desP2Top
-            })
-            var tmpX = parseInt($p1.attr("x"))
-            var tmpY = parseInt($p1.attr("y"))
-            $p1.attr("x", parseInt($p2.attr("x")))
-            $p1.attr("y", parseInt($p2.attr("y")))
-            $p2.attr("x", tmpX)
-            $p2.attr("y", tmpY)
-            result = 0
+            _exchangePoints(p1, p2)
+            result.code = 0
+            result.data = res.data
         } else {
             console.error("交换失败")
             result = 1
         }
     })
     return result
+}
+
+function _exchangePoints(p1, p2) {
+    var $p1 = $("#pane .pane-ceil[id=" + p1.id + "][x=" + p1.x + "][y=" + p1.y + "]")
+    var $p2 = $("#pane .pane-ceil[id=" + p2.id + "][x=" + p2.x + "][y=" + p2.y + "]")
+    var desP1Left = $p2.position().left
+    var desP1Top = $p2.position().top
+    var desP2Left = $p1.position().left
+    var desP2Top = $p1.position().top
+    $p1.animate({
+        left: desP1Left,
+        top: desP1Top
+    })
+    $p2.animate({
+        left: desP2Left,
+        top: desP2Top
+    })
+    var tmpX = parseInt($p1.attr("x"))
+    var tmpY = parseInt($p1.attr("y"))
+    $p1.attr("x", parseInt($p2.attr("x")))
+    $p1.attr("y", parseInt($p2.attr("y")))
+    $p2.attr("x", tmpX)
+    $p2.attr("y", tmpY)
 }
 
 function _clearSelectedCeil() {
@@ -182,8 +190,9 @@ function bindListener() {
                 resolve(_getExchangeResult())
             })
             promise.then((e) => {
-                if (e == 0) {
-
+                if (e.code == 0) {
+                    var removeArray = e.data
+                    console.log(removeArray)
                 }
                 _clearSelectedCeil()
             })
