@@ -21,6 +21,12 @@ body {
     border-radius: 10px;
 }
 
+#pane .pane-ceil-clone {
+    position:absolute;
+    border:2px solid #fff;
+    border-radius: 10px;
+}
+
 #pane .pane-ceil:hover {
     cursor:pointer;
 }
@@ -33,16 +39,16 @@ body {
     position:relative;
     text-align:center;
     left:25px;
-    top:-15px;
-    width:300px;
+    top:-25px;
+    width:400px;
     height:20px;
+    line-height:20px;
     border:1px solid #ccc;
     border-radius: 2px;
     background-color:#000;
     display:none;
     z-index: 1000;
     color: #fff;
-    line-height:20px;
     font-size:15px;
 }
 
