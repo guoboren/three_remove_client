@@ -10,12 +10,11 @@ var SELECTED_CEIL_2 = null
 var BASE_URL = "http://192.168.206.253:8001/"
 
 $(function () {
-    getConfig();
     init();
     bindListener();
 })
 
-function getConfig() {
+function _getConfig() {
     $.ajax({
         url: BASE_URL,
         async: false,
@@ -45,6 +44,7 @@ function getConfig() {
 
 
 function init() {
+    _getConfig();
     $.ajax({
         url: BASE_URL,
         async: true,
@@ -280,6 +280,10 @@ function bindListener() {
                                 var removeRange = res.removeRange
                                 var removes = res.removes
                                 var fillPoints = res.fillPoints
+                                var lastPoints = res.lastPoints
+                                // console.log(removes)
+                                // console.log(lastPoints)
+                                // console.log(removeRange)
                                 _doRemoveAnimation(removeRange, removes, fillPoints)
                             }
                         }, 250)
