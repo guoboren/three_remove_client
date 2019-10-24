@@ -153,6 +153,7 @@ function _fillVertical(y, news, total) {
         }
         var step = 0
         var nullPos = { x: x, y: y }
+        // TODO 用坐标计算移动
         for (var tmpX = x + 1; tmpX <= CONFIG.rows; tmpX++) {
             var $tmpP = _getCeilByPos({ x: tmpX, y: y })
             if ($tmpP == null) {
